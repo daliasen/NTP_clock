@@ -48,52 +48,14 @@ void setup() {
 void loop() {
   //switch on the led in the 3'rd row 8'th column
   //and remember that indices start at 0! 
-  lc.setLed(0,2,7,true);   
-  //Led at row 0 second from left too
-  lc.setLed(0,0,1,true);   
-  delay(500);
-  //switch the first Led off (second one stays on)
-  lc.setLed(0,2,7,false);
-  delay(500);
-  // 0
-  /*lc.setRow(0,0,B11111111); // top row, outside
-  lc.setRow(0,1,B11111111); // 2nd row from top
-  lc.setRow(0,2,B11111111); // 3rd row from top, outside
-  lc.setRow(0,3,B11111111); // 4th row from top
-  lc.setRow(0,4,B11111111); // bottom row, outside
-  lc.setRow(0,5,B11111111); // bottom row, middle (including colon)
-  lc.setRow(0,6,B00000000); // middle row, middle
-  lc.setRow(0,7,B11111111); // top, middle (including colon)
 
-  delay(delaytime);
-  turnOffLEDs(&lc);
-  delay(delaytime);
-
-  // 1
-  lc.setRow(0,0,B01010101); // top row, outside
-  lc.setRow(0,1,B01010101); // 2nd row from top
-  lc.setRow(0,2,B01010101); // 3rd row from top, outside
-  lc.setRow(0,3,B01010101); // 4th row from top
-  lc.setRow(0,4,B01010101); // bottom row, outside
-  lc.setRow(0,5,B00010000); // bottom row, middle (including colon)
-  lc.setRow(0,6,B00000000); // middle row, middle
-  lc.setRow(0,7,B00010000); // top, middle (including colon)
-
-  delay(delaytime);
-  turnOffLEDs(&lc);
-  delay(delaytime);
-
-  // 2
-  lc.setRow(0,0,B11111111); // top row, outside
-  lc.setRow(0,1,B01010101); // 2nd row from top
-  lc.setRow(0,2,B11111111); // 3rd row from top, outside
-  lc.setRow(0,3,B10101010); // 4th row from top
-  lc.setRow(0,4,B11111111); // bottom row, outside
-  lc.setRow(0,5,B11111111); // bottom row, middle (including colon)
-  lc.setRow(0,6,B10101010); // middle row, middle
-  lc.setRow(0,7,B11111111); // top, middle (including colon)
-
-  delay(delaytime);
-  turnOffLEDs(&lc);
-  delay(delaytime);*/
+  for (int i = 0; i < 10; i++){
+    turnOnDigit(&lc, 0, i); // (LedControl* lc, int digitNo, int digit)
+    turnOnDigit(&lc, 1, i); // (LedControl* lc, int digitNo, int digit)
+    turnOnDigit(&lc, 2, i); // (LedControl* lc, int digitNo, int digit)
+    turnOnDigit(&lc, 3, i); // (LedControl* lc, int digitNo, int digit)
+    delay(500);
+    turnOffLEDs(&lc);
+    delay(500);
+  }
  }

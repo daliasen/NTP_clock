@@ -16,22 +16,13 @@ LedControl lc=LedControl(12,11,10,1);
 
 /* we always wait a bit between updates of the display */
 unsigned long delaytime=800;
-/*int segDP = B10000000;
-int segA = B01000000;
-int segB = B00100000;
-int segC = B00010000;
-int segD = B00001000;
-int segE = B00000100;
-int segF = B00000010;
-int segG = B00000001;*/
-int segDP = B11111111;
-int segA = B11111111;
-int segB = B11111111;
-int segC = B11111111;
-int segD = B11111111;
-int segE = B11111111;
-int segF = B11111111;
-int segG = B11111111;
+
+// for photo-resistor
+int lightPin = 0; // Analog pin
+int minLevel = 260;
+int maxLevel = 1023; 
+int lightLevel;
+int brightness;
 
 void setup() {
   /*
@@ -40,22 +31,25 @@ void setup() {
    */
   lc.shutdown(0,false);
   /* Set the brightness to a medium values */
-  lc.setIntensity(0,4);
+  //lc.setIntensity(0,4);
   /* and clear the display */
   lc.clearDisplay(0);
 }
 
 void loop() {
-  //switch on the led in the 3'rd row 8'th column
-  //and remember that indices start at 0! 
-
   for (int i = 0; i < 10; i++){
     turnOnDigit(&lc, 0, i); // (LedControl* lc, int digitNo, int digit)
-    turnOnDigit(&lc, 1, i); // (LedControl* lc, int digitNo, int digit)
-    turnOnDigit(&lc, 2, i); // (LedControl* lc, int digitNo, int digit)
-    turnOnDigit(&lc, 3, i); // (LedControl* lc, int digitNo, int digit)
-    delay(500);
+    turnOnDigit(&lc, 1, i); 
+    turnOnDigit(&lc, 2, i); 
+    turnOnDigit(&lc, 3, i); 
+    delay(delaytime);
     turnOffLEDs(&lc);
-    delay(500);
+    delay(delaytime);
+
+    lightLevel = analogRead(lightPin); // Read the value of the photoresistor
+    lightLevel = constrain(lightLevel, minLevel, maxLevel);
+    brightness = map(lightLevel, minLevel, 1023, 1, 15); // (value, fromLow, fromHigh, toLow, toHigh)
+    brightness = constrain(brightness, 1, 15);
+    lc.setIntensity(0,brightness);
   }
  }

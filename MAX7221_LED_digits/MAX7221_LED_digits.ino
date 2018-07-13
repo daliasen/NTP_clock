@@ -49,6 +49,8 @@ void loop() {
     turnOffLEDs(&lc);
     delay(delaytime);
 
+    turnOnColon(&lc);
+
     lightLevel = analogRead(lightPin); // Read the value of the photoresistor
     lightLevel = constrain(lightLevel, minLevel, maxLevel);
     brightness = map(lightLevel, minLevel, 1023, 1, 15); // (value, fromLow, fromHigh, toLow, toHigh)

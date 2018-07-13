@@ -3,6 +3,8 @@
 
 #include "LedControl.h"
 
+void turnOffColon(LedControl* lc);
+void turnOnColon(LedControl* lc);
 void turnOffLEDs(LedControl* lc);
 void turnOnDigit(LedControl* lc, int digitNo, int digit);
 

@@ -1,5 +1,15 @@
 #include "MAX7221_LED_digits.h"
 
+void turnOffColon(LedControl* lc) {
+  lc->setLed(0, 5, 3, false);
+  lc->setLed(0, 7, 3, false);
+}
+
+void turnOnColon(LedControl* lc) {
+  lc->setLed(0, 5, 3, true);
+  lc->setLed(0, 7, 3, true);
+}
+
 void turnOffLEDs(LedControl* lc) {
   lc->setRow(0, 0, B00000000); // setRow(addr,row,value)
   lc->setRow(0, 1, B00000000); // setRow(addr,row,value)

@@ -1,8 +1,8 @@
-// https://playground.arduino.cc/Main/LedControl#Setup
-/* We start by including the library */
-
 #include "LedControl.h"
 #include "MAX7221_LED_digits.h"
+#include "Ciao.h"
+
+// Ciao File Connector needs to be enabled
 
 /* 
  * Now we create a new LedControl. 
@@ -34,6 +34,9 @@ void setup() {
   //lc.setIntensity(0,4);
   /* and clear the display */
   lc.clearDisplay(0);
+
+  Ciao.begin();
+  Serial.begin(9600);
 }
 
 void loop() {
@@ -52,4 +55,22 @@ void loop() {
     brightness = constrain(brightness, 1, 15);
     lc.setIntensity(0,brightness);
   }
+
+  delay(500);
+
+  //Read file from lininoOS
+  CiaoData data = Ciao.read("file","/root/date/date.txt");
+  if(!data.isEmpty()){
+
+    //extract data from Ciao
+    String message = data.get(2);
+
+    //Print message via serial
+    Serial.println(message);
+
+    //string3 += string2; // append
+    //char thisChar = string1[n]
+  }
+  //Delay the operations because IO is slow
+  delay(500);
  }

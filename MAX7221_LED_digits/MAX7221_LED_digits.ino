@@ -66,9 +66,35 @@ void loop() {
 
     //extract data from Ciao
     String message = data.get(2);
+    // you need include <algorithm> to use general algorithms like std::remove()
+    message.remove(10);
 
+    unsigned long epoch = 0;
+
+    for (int i = 0; i < message.length(); i++) {
+       char c = message.charAt(i);
+       if (c < '0' || c > '9') break;
+       epoch *= 10;
+       epoch += (c - '0');
+    }
+    
     //Print message via serial
     Serial.println(message);
+    Serial.println("epoch:");
+    Serial.println(epoch);
+
+    byte second = epoch%60; epoch /= 60;
+    byte minute = epoch%60; epoch /= 60;
+    byte hour   = epoch%24; epoch /= 24;
+
+    Serial.println("second:");
+    Serial.println(second);
+
+    Serial.println("minute:");
+    Serial.println(minute);
+
+    Serial.println("hour:");
+    Serial.println(hour);
 
     //string3 += string2; // append
     //char thisChar = string1[n]

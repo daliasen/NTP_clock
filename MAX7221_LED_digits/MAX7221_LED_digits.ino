@@ -14,8 +14,8 @@
  */
 LedControl lc=LedControl(12,11,10,1); 
 
-/* we always wait a bit between updates of the display */
-unsigned long delaytime=800;
+/* wait a bit between updates of the display */
+unsigned long delaytime=900;
 
 // for photo-resistor
 int lightPin = 0; // Analog pin
@@ -40,25 +40,15 @@ void setup() {
 }
 
 void loop() {
-  for (int i = 0; i < 10; i++){
-    turnOnDigit(&lc, 0, i); // (LedControl* lc, int digitNo, int digit)
-    turnOnDigit(&lc, 1, i); 
-    turnOnDigit(&lc, 2, i); 
-    turnOnDigit(&lc, 3, i); 
-    delay(delaytime);
-    turnOffLEDs(&lc);
-    delay(delaytime);
+  lightLevel = analogRead(lightPin); // Read the value of the photoresistor
+  lightLevel = constrain(lightLevel, minLevel, maxLevel);
+  brightness = map(lightLevel, minLevel, 1023, 1, 15); // (value, fromLow, fromHigh, toLow, toHigh)
+  brightness = constrain(brightness, 1, 15);
+  lc.setIntensity(0,brightness);
 
-    turnOnColon(&lc);
+  delay(delaytime);
 
-    lightLevel = analogRead(lightPin); // Read the value of the photoresistor
-    lightLevel = constrain(lightLevel, minLevel, maxLevel);
-    brightness = map(lightLevel, minLevel, 1023, 1, 15); // (value, fromLow, fromHigh, toLow, toHigh)
-    brightness = constrain(brightness, 1, 15);
-    lc.setIntensity(0,brightness);
-  }
-
-  delay(500);
+  turnOnColon(&lc);
 
   //Read file from lininoOS
   CiaoData data = Ciao.read("file","/root/date/date.txt");
@@ -77,15 +67,27 @@ void loop() {
        epoch *= 10;
        epoch += (c - '0');
     }
-    
-    //Print message via serial
-    Serial.println(message);
-    Serial.println("epoch:");
-    Serial.println(epoch);
 
     byte second = epoch%60; epoch /= 60;
     byte minute = epoch%60; epoch /= 60;
     byte hour   = epoch%24; epoch /= 24;
+
+    byte digit_3 = minute % 10;
+    byte digit_2 = (minute - digit_3) / 10;
+    byte digit_1 = hour % 10;
+    byte digit_0 = (hour - digit_1) / 10;
+
+    // display time
+    turnOffLEDs(&lc);
+    turnOnDigit(&lc, 0, digit_0); // (LedControl* lc, int digitNo, int digit)
+    turnOnDigit(&lc, 1, digit_1); 
+    turnOnDigit(&lc, 2, digit_2); 
+    turnOnDigit(&lc, 3, digit_3); 
+    
+    // print message via serial
+    Serial.println(message);
+    Serial.println("epoch:");
+    Serial.println(epoch);
 
     Serial.println("second:");
     Serial.println(second);
@@ -96,9 +98,16 @@ void loop() {
     Serial.println("hour:");
     Serial.println(hour);
 
-    //string3 += string2; // append
-    //char thisChar = string1[n]
+    Serial.println("digit_3:");
+    Serial.println(digit_3);
+
+    Serial.println("digit_2:");
+    Serial.println(digit_2);
+
+    Serial.println("digit_1:");
+    Serial.println(digit_1);
+
+    Serial.println("digit_0:");
+    Serial.println(digit_0);
   }
-  //Delay the operations because IO is slow
-  delay(500);
  }

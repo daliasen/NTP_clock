@@ -7,5 +7,6 @@ void turnOffColon(LedControl* lc);
 void turnOnColon(LedControl* lc);
 void turnOffLEDs(LedControl* lc);
 void turnOnDigit(LedControl* lc, int digitNo, int digit);
+void turnOnErr(LedControl* lc);
 
 #endif // _MAX7221_LED_digits_

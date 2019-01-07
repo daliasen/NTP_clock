@@ -176,3 +176,45 @@ void turnOnDigit(LedControl* lc, int digitNo, int digit) {
   }
 }
 
+void turnOnErr(LedControl* lc){
+  int column = 0;
+  lc->setLed(0, 0, column, true); // address of the display, row (0..7), column (0..7)
+  lc->setLed(0, 1, column, true);
+  lc->setLed(0, 2, column, true);
+  lc->setLed(0, 3, column, true);
+  lc->setLed(0, 4, column, true);
+  lc->setLed(0, 5, column, true);
+  lc->setLed(0, 6, column, true);
+  lc->setLed(0, 7, column, true);
+  lc->setLed(0, 0, column + 1, true);
+  //lc->setLed(0, 1, column + 1, true);
+  lc->setLed(0, 2, column + 1, true);
+  //lc->setLed(0, 3, column + 1, true);
+  lc->setLed(0, 4, column + 1, true);
+
+  column = 2;
+  //lc->setLed(0, 0, column, true); // address of the display, row (0..7), column (0..7)
+  //lc->setLed(0, 1, column, true);
+  lc->setLed(0, 2, column, true);
+  lc->setLed(0, 3, column, true);
+  lc->setLed(0, 4, column, true);
+  //lc->setLed(0, 5, column, true);
+  lc->setLed(0, 6, column, true);
+  /*lc->setLed(0, 7, column, true);
+  lc->setLed(0, 0, column + 1, true);
+  lc->setLed(0, 1, column + 1, true);
+  lc->setLed(0, 2, column + 1, true);
+  lc->setLed(0, 3, column + 1, true);
+  lc->setLed(0, 4, column + 1, true);*/
+
+  column = 4;
+  //lc->setLed(0, 0, column, true); // address of the display, row (0..7), column (0..7)
+  //lc->setLed(0, 1, column, true);
+  lc->setLed(0, 2, column, true);
+  lc->setLed(0, 3, column, true);
+  lc->setLed(0, 4, column, true);
+  //lc->setLed(0, 5, column, true);
+  lc->setLed(0, 6, column, true);
+}
+
+

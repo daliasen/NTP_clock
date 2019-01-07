@@ -3,6 +3,7 @@
 #include "Ciao.h"
 
 // Ciao File Connector needs to be enabled
+// print message via serial (can't print when the script is using the bridge)
 
 /* 
  * Now we create a new LedControl. 
@@ -24,6 +25,9 @@ int maxLevel = 1023;
 int lightLevel;
 int brightness;
 
+// message
+unsigned long epoch = 0;
+
 void setup() {
   /*
    The MAX72XX is in power-saving mode on startup,
@@ -40,10 +44,11 @@ void setup() {
 }
 
 void loop() {
-  lightLevel = analogRead(lightPin); // Read the value of the photoresistor
+  /*lightLevel = analogRead(lightPin); // Read the value of the photoresistor
   lightLevel = constrain(lightLevel, minLevel, maxLevel);
   brightness = map(lightLevel, minLevel, 1023, 1, 15); // (value, fromLow, fromHigh, toLow, toHigh)
-  brightness = constrain(brightness, 1, 15);
+  brightness = constrain(brightness, 1, 15);*/
+  brightness = 4; // set to max
   lc.setIntensity(0,brightness);
 
   delay(delaytime);
@@ -53,61 +58,46 @@ void loop() {
   //Read file from lininoOS
   CiaoData data = Ciao.read("file","/root/date/date.txt");
   if(!data.isEmpty()){
-
-    //extract data from Ciao
+  
+    //get data from Ciao
     String message = data.get(2);
-    // you need include <algorithm> to use general algorithms like std::remove()
     message.remove(10);
-
-    unsigned long epoch = 0;
-
-    for (int i = 0; i < message.length(); i++) {
-       char c = message.charAt(i);
-       if (c < '0' || c > '9') break;
-       epoch *= 10;
-       epoch += (c - '0');
+  
+    if (message.length() > 0){
+      epoch = 0;
+  
+      for (int i = 0; i < message.length(); i++) {
+         char c = message.charAt(i);
+         if (c < '0' || c > '9') break;
+         epoch *= 10;
+         epoch += (c - '0');
+      }
+  
+      byte second = epoch%60; epoch /= 60;
+      byte minute = epoch%60; epoch /= 60;
+      byte hour   = epoch%24; epoch /= 24;
+  
+      byte digit_3 = minute % 10;
+      byte digit_2 = (minute - digit_3) / 10;
+      byte digit_1 = hour % 10;
+      byte digit_0 = (hour - digit_1) / 10;
+  
+      // display time
+      turnOffLEDs(&lc);
+      turnOnDigit(&lc, 0, digit_0); // (LedControl* lc, int digitNo, int digit)
+      turnOnDigit(&lc, 1, digit_1); 
+      turnOnDigit(&lc, 2, digit_2); 
+      turnOnDigit(&lc, 3, digit_3); 
     }
-
-    byte second = epoch%60; epoch /= 60;
-    byte minute = epoch%60; epoch /= 60;
-    byte hour   = epoch%24; epoch /= 24;
-
-    byte digit_3 = minute % 10;
-    byte digit_2 = (minute - digit_3) / 10;
-    byte digit_1 = hour % 10;
-    byte digit_0 = (hour - digit_1) / 10;
-
-    // display time
-    turnOffLEDs(&lc);
-    turnOnDigit(&lc, 0, digit_0); // (LedControl* lc, int digitNo, int digit)
-    turnOnDigit(&lc, 1, digit_1); 
-    turnOnDigit(&lc, 2, digit_2); 
-    turnOnDigit(&lc, 3, digit_3); 
-    
-    // print message via serial
-    Serial.println(message);
-    Serial.println("epoch:");
-    Serial.println(epoch);
-
-    Serial.println("second:");
-    Serial.println(second);
-
-    Serial.println("minute:");
-    Serial.println(minute);
-
-    Serial.println("hour:");
-    Serial.println(hour);
-
-    Serial.println("digit_3:");
-    Serial.println(digit_3);
-
-    Serial.println("digit_2:");
-    Serial.println(digit_2);
-
-    Serial.println("digit_1:");
-    Serial.println(digit_1);
-
-    Serial.println("digit_0:");
-    Serial.println(digit_0);
+    else{
+      turnOffLEDs(&lc);
+      turnOnErr(&lc);
+      turnOnDigit(&lc, 3, 2);
+    }
   }
+  /*else{
+    turnOffLEDs(&lc);
+    turnOnErr(&lc);
+    turnOnDigit(&lc, 3, 1);
+  }*/
  }

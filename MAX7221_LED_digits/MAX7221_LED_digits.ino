@@ -61,7 +61,7 @@ void loop() {
   
     //get data from Ciao
     String message = data.get(2);
-    message.remove(10);
+    message.trim();
   
     if (message.length() > 0){
       epoch = 0;

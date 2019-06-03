@@ -56,12 +56,13 @@ void loop() {
   turnOnColon(&lc);
 
   //Read file from lininoOS
-  CiaoData data = Ciao.read("file","/root/date/date.txt");
+  //CiaoData data = Ciao.read("file","/root/date/date.txt");
+  CiaoData data = Ciao.write("shell", "date +%s");
   if(!data.isEmpty()){
   
     //get data from Ciao
     String message = data.get(2);
-    message.trim();
+    message.trim(); // remove leading or trailing whitespace
   
     if (message.length() > 0){
       epoch = 0;

@@ -20,11 +20,11 @@ LedControl lc=LedControl(12,11,10,1);
 unsigned long delaytime=900;
 
 // for photo-resistor
-int lightPin = 0; // Analog pin
+/*int lightPin = 0; // Analog pin
 int minLevel = 260;
 int maxLevel = 1023; 
 int lightLevel;
-int brightness;
+int brightness;*/
 
 String hour;
 String minute;
@@ -110,6 +110,7 @@ void loop() {
   // TODO: get a tuple with sign, temperature_digit_2 & 3
       
   if(second.toInt()%5 == 0){
-    displayTemperature(&lc, second);
+    displayTemperature(&lc, second); // split into read and display?
+    delay(200);
   }
  }

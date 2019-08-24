@@ -21,6 +21,40 @@ void turnOffLEDs(LedControl* lc) {
   lc->setRow(0, 7, B00000000); // setRow(addr,row,value)
 }
 
+void turnOnSign(LedControl* lc, int digitNo, char sign){
+  int column = digitNo * 2;
+  if(sign == '+'){
+    //lc->setLed(0, 0, column, true); // address of the display, row (0..7), column (0..7)
+    //lc->setLed(0, 1, column, true);
+    lc->setLed(0, 2, column, true);
+    //lc->setLed(0, 3, column, true);
+    //lc->setLed(0, 4, column, true);
+    lc->setLed(0, 5, column, true);
+    lc->setLed(0, 6, column, true);
+    lc->setLed(0, 7, column, true);
+    //lc->setLed(0, 0, column + 1, true);
+    //lc->setLed(0, 1, column + 1, true);
+    lc->setLed(0, 2, column + 1, true);
+    //lc->setLed(0, 3, column + 1, true);
+    //lc->setLed(0, 4, column + 1, true);
+  }
+  else if(sign == '-'){
+    //lc->setLed(0, 0, column, true); // address of the display, row (0..7), column (0..7)
+    //lc->setLed(0, 1, column, true);
+    lc->setLed(0, 2, column, true);
+    //lc->setLed(0, 3, column, true);
+    //lc->setLed(0, 4, column, true);
+    //lc->setLed(0, 5, column, true);
+    lc->setLed(0, 6, column, true);
+    //lc->setLed(0, 7, column, true);
+    //lc->setLed(0, 0, column + 1, true);
+    //lc->setLed(0, 1, column + 1, true);
+    lc->setLed(0, 2, column + 1, true);
+    //lc->setLed(0, 3, column + 1, true);
+    //lc->setLed(0, 4, column + 1, true);
+  }
+}
+
 void turnOnDigit(LedControl* lc, int digitNo, int digit) {
   int column = digitNo * 2;
   switch (digit) {
@@ -216,5 +250,3 @@ void turnOnErr(LedControl* lc){
   //lc->setLed(0, 5, column, true);
   lc->setLed(0, 6, column, true);
 }
-
-

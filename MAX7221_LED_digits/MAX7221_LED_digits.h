@@ -6,6 +6,7 @@
 void turnOffColon(LedControl* lc);
 void turnOnColon(LedControl* lc);
 void turnOffLEDs(LedControl* lc);
+void turnOnSign(LedControl* lc, int digitNo, char sign);
 void turnOnDigit(LedControl* lc, int digitNo, int digit);
 void turnOnErr(LedControl* lc);
 

@@ -1,9 +1,10 @@
 #include "LedControl.h"
 #include "MAX7221_LED_digits.h"
 #include "Ciao.h"
+#include "temperature.h"
 
 // Ciao File Connector needs to be enabled
-// print message via serial (can't print when the script is using the bridge)
+// print message via serial 
 
 /* 
  * Now we create a new LedControl. 
@@ -25,8 +26,9 @@ int maxLevel = 1023;
 int lightLevel;
 int brightness;
 
-// message
-unsigned long epoch = 0;
+String hour;
+String minute;
+String second;
 
 void setup() {
   /*
@@ -40,10 +42,15 @@ void setup() {
   lc.clearDisplay(0);
 
   Ciao.begin();
+  SERIAL_PORT_IN_USE.setTimeout(10000); // set stream timeout to 10s
   Serial.begin(9600);
+  Serial.println("serial is initialized");
+  
+  delay(40000);
 }
 
 void loop() {
+  Serial.println("==========================================");
   /*lightLevel = analogRead(lightPin); // Read the value of the photoresistor
   lightLevel = constrain(lightLevel, minLevel, maxLevel);
   brightness = map(lightLevel, minLevel, 1023, 1, 15); // (value, fromLow, fromHigh, toLow, toHigh)
@@ -55,34 +62,32 @@ void loop() {
 
   turnOnColon(&lc);
 
-  //Read file from lininoOS
-  //CiaoData data = Ciao.read("file","/root/date/date.txt");
-  CiaoData data = Ciao.write("shell", "date +%s");
-  if(!data.isEmpty()){
-  
-    //get data from Ciao
-    String message = data.get(2);
-    message.trim(); // remove leading or trailing whitespace
-  
-    if (message.length() > 0){
-      epoch = 0;
-  
-      for (int i = 0; i < message.length(); i++) {
-         char c = message.charAt(i);
-         if (c < '0' || c > '9') break;
-         epoch *= 10;
-         epoch += (c - '0');
-      }
-  
-      byte second = epoch%60; epoch /= 60;
-      byte minute = epoch%60; epoch /= 60;
-      byte hour   = epoch%24; epoch /= 24;
-  
-      byte digit_3 = minute % 10;
-      byte digit_2 = (minute - digit_3) / 10;
-      byte digit_1 = hour % 10;
-      byte digit_0 = (hour - digit_1) / 10;
-  
+  // run a command in lininoOS
+  CiaoData data_time = Ciao.write("shell", "date +%H:%M:%S");
+
+  /*Serial.println("data_time.get(0): " + data_time.get(0));
+  Serial.println("data_time.get(1): " + data_time.get(1));
+  Serial.println("data_time.get(2): " + data_time.get(2));*/
+
+  if (!data_time.isEmpty()){
+    String message_time = data_time.get(2);
+    message_time.trim(); // remove leading or trailing whitespace
+    //Serial.println(message_time);
+
+    if (message_time.length() > 0){
+      hour = message_time.substring(0,2);
+      minute = message_time.substring(3,5);
+      second = message_time.substring(6,8);
+      
+      /*Serial.println("hour: " + hour);
+      Serial.println("minute: " + minute);*/
+      Serial.println("second: " + second);
+
+      int digit_3 = minute.toInt() % 10;
+      int digit_2 = (minute.toInt() - digit_3) / 10;
+      int digit_1 = hour.toInt() % 10;
+      int digit_0 = (hour.toInt() - digit_1) / 10;
+
       // display time
       turnOffLEDs(&lc);
       turnOnDigit(&lc, 0, digit_0); // (LedControl* lc, int digitNo, int digit)
@@ -96,9 +101,15 @@ void loop() {
       turnOnDigit(&lc, 3, 2);
     }
   }
-  /*else{
+  else{
     turnOffLEDs(&lc);
     turnOnErr(&lc);
     turnOnDigit(&lc, 3, 1);
-  }*/
+  }
+
+  // TODO: get a tuple with sign, temperature_digit_2 & 3
+      
+  if(second.toInt()%5 == 0){
+    displayTemperature(&lc, second);
+  }
  }

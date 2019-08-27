@@ -19,13 +19,6 @@ LedControl lc=LedControl(12,11,10,1);
 /* wait a bit between updates of the display */
 unsigned long delaytime=900;
 
-// for photo-resistor
-/*int lightPin = 0; // Analog pin
-int minLevel = 260;
-int maxLevel = 1023; 
-int lightLevel;
-int brightness;*/
-
 String hour;
 String minute;
 String second;
@@ -45,18 +38,15 @@ void setup() {
   SERIAL_PORT_IN_USE.setTimeout(10000); // set stream timeout to 10s
   Serial.begin(9600);
   Serial.println("serial is initialized");
+
+  int brightness = 4; // set to max
+  lc.setIntensity(0,brightness);
   
   delay(40000);
 }
 
 void loop() {
   Serial.println("==========================================");
-  /*lightLevel = analogRead(lightPin); // Read the value of the photoresistor
-  lightLevel = constrain(lightLevel, minLevel, maxLevel);
-  brightness = map(lightLevel, minLevel, 1023, 1, 15); // (value, fromLow, fromHigh, toLow, toHigh)
-  brightness = constrain(brightness, 1, 15);*/
-  brightness = 4; // set to max
-  lc.setIntensity(0,brightness);
 
   delay(delaytime);
 
@@ -108,9 +98,10 @@ void loop() {
   }
 
   // TODO: get a tuple with sign, temperature_digit_2 & 3
-      
+
+  delay(500);    
   if(second.toInt()%5 == 0){
-    displayTemperature(&lc, second); // split into read and display?
-    delay(200);
+    displayTemperature(&lc, second); // TODO: split into read and display?
+    delay(500);
   }
  }

@@ -6,17 +6,20 @@ void displayTemperature(LedControl* lc, String second){
   int temperature_digit_3;
   // run a command in lininoOS
   CiaoData data_temperature = Ciao.write("shell", "cat temperature.txt");
-  while(data_temperature.isEmpty()){
+  String message_temperature = "";
+  int len_temperature = message_temperature.length();
+  while(data_temperature.isEmpty() || (len_temperature < 1 || len_temperature > 3)){
     data_temperature = Ciao.write("shell", "cat temperature.txt");
     Serial.println("data_temperature.get(0): " + data_temperature.get(0));
     Serial.println("data_temperature.get(1): " + data_temperature.get(1));
     Serial.println("data_temperature.get(2): " + data_temperature.get(2));
       if(!data_temperature.isEmpty()){
-        String message_temperature = data_temperature.get(2);
+        message_temperature = data_temperature.get(2);
         message_temperature.trim(); // remove leading or trailing whitespace
         //Serial.println("message_temperature: " + message_temperature);
 
-        int len_temperature = message_temperature.length();
+        len_temperature = message_temperature.length();
+        Serial.println("message_temperature length: " + String(len_temperature));
         if(len_temperature == 3){
           sign = message_temperature[0];
           temperature_digit_2 = String(message_temperature[1]).toInt();
@@ -39,15 +42,6 @@ void displayTemperature(LedControl* lc, String second){
           sign = '+';        
           temperature_digit_2 = NULL;   
           temperature_digit_3 = message_temperature.toInt();
-        }
-        else if(len_temperature == 0){
-          delay(200);
-          turnOffLEDs(lc);
-          turnOnErr(lc);
-          turnOnDigit(lc, 3, 5);
-        }
-        else{
-          Serial.println("temperature message is too long");
         }
 
         // display temperature

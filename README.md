@@ -4,8 +4,18 @@ A DIY digital Network Time Protocol (NTP) clock and temperature display with ada
 
 ## Linux configuration
 
-Requires a config.py file containing a [Met Office API key](https://www.metoffice.gov.uk/services/data/datapoint/api) in the root directory:
+Requires a **/root/config.py** file containing a [Met Office API key](https://www.metoffice.gov.uk/services/data/datapoint/api):
 
+```bash
 MET_OFFICE_API_KEY = '<Your DataPoint API key>'
+```
+
+Reguires the following line in the **/etc/rc.local** file so that the script that regularly updates the temperature is executed once the system init is finished:
+
+```bash
+bash /root/temperature.sh
+```
+  
+
 
 

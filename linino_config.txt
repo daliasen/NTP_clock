@@ -5,17 +5,3 @@ ntpd time.google.com
 https://linux.die.net/man/8/ntpd
 https://linux.die.net/man/1/date
 
-***
-
-scheduled a bash script /root/date/date.sh to be run every minute using crontab -e command
-
-***
-
-https://github.com/arduino-org/Ciao/blob/master/ciao/connectors/file/examples/FileRead/FileRead.ino
-
-Anthony:
-https://stackoverflow.com/questions/33204838/bash-command-wait-until-next-full-second
-
-https://stackoverflow.com/questions/16548528/command-to-get-time-in-milliseconds#16548827
-https://askubuntu.com/questions/814/how-to-run-scripts-on-start-up#816
-https://unix.stackexchange.com/questions/223778/how-to-run-an-infinite-loop-in-the-background#223780

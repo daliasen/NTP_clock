@@ -1,6 +1,6 @@
 # NTP_clock
 
-A DIY digital Network Time Protocol (NTP) clock and temperature display with adaptive brightness. Built with an Arduino TIAN and an MAX7221 LED display driver.
+A DIY digital Network Time Protocol (NTP) clock and temperature display with adaptive brightness. Built with an Arduino TIAN and a MAX7221 LED display driver.
 
 ## Cloning this repository
 

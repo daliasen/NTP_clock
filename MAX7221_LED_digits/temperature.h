@@ -5,6 +5,6 @@
 #include "MAX7221_LED_digits.h"
 #include "Ciao.h"
 
-void displayTemperature(LedControl* lc, String second);
+String readTemperatureShell();
 
 #endif // _temperature_
